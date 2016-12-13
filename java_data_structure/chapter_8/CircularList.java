@@ -50,5 +50,36 @@ class CircularList {
 		return temp.value();
 	}
 
+	public Object removeFirst() {
+		assert count > 0;
+		SinglyLinkedListElement finger = null;
+		if (tail.next() != tail) {
+			finger = tail.next();
+			tail.setNext(finger.next());
+		} else {
+			finger = tail;
+			tail = null;
+		}
+
+		count--;
+		return finger.value();
+	}
+
+	public Object getFirst() {
+		return tail.next().value();
+	}
+
+	public int size() {
+		return count;
+	}
+
+	public void clear() {
+		tail = null;
+		count = 0;
+	}
+
+	public boolean isEmpty() {
+		return count == 0;
+	}
     
 }
