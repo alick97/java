@@ -1,0 +1,76 @@
+// 伸展树 的 部分代码
+// 通过 左右旋转 使得树的高度减小 优化树的查找和操作的时间
+
+protected void rotateRight() {
+	BinaryTree parent = parent();
+	BinaryTree newRoot = left();
+	boolean wasChild = (parent != null);
+	boolean wasLeftChild = isLeftChild();
+
+	setLeft(newRoot.right());
+	newRoot.setRight(this);
+	if (wasChild) {
+		if (wasLeftChild)
+			parent.setLeft(newRoot);
+		else
+			parent.setRight(newRoot);
+	}
+}
+
+
+// 伸展树 的迭代器
+class SplayTreeIterator {
+	protected BinaryTree tree;
+	protected BinaryTree current;
+
+	public SplayTreeIterator(BinaryTree root) {
+		tree = root;
+		reset();
+	}
+
+	public void reset() {
+		current = tree;
+		if (!current.isEmpty()) {
+			current = current.root();
+			while (!current.left().isEmpty()) {
+				// 一直向左边走
+			    current = current.left();
+			}
+		}
+	}
+
+	public boolean hasNext() {
+		return !current.isEmpty();
+	}
+
+	public Object get() {
+		return current.value();
+	}
+
+	public Object next() {
+		Object result = current.value();
+		if (!current.right().isEmpty()) {
+			current = current.right();
+			while (!current.left().isEmpty()) {
+				current = current.left();
+			}
+		} else {
+			boolean lefty;
+			do {
+				lefty = current.isLeftChild();
+				current = current.parent();
+			} while (current != null && !lefty);// 是右树 就一直向上走
+		}
+
+		if (current == null)
+			current = BinaryTree.EMPTY;
+
+		return result;
+	}
+}
+
+
+// 红黑树
+// 1 每个红色节点有两个黑色的节点
+// 2 每个叶子节点有两个黑色的节点 （空节点认为是黑节点）
+// 3 从一个节点到一个子孙节点的每条路径上包含 相同数目的黑色节点
