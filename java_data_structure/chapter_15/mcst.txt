@@ -1,0 +1,46 @@
+// 贪心算法 最小生成树
+
+static public void mcst(Graph g) {
+	PriorityQueue q = new SkepHeap(); // 优先级队列 每次取得是最小的 最小优先
+	Object v = null;
+	Edge e;
+	 g.reset();
+
+	 ComparableEdge shortest = null;
+	 Iterator ei = g.edges();
+	 v = null;
+	 while (ei.hasNext()) {
+		 ComparableEdge possible = new ComparableEdge((Edge)ei.next());
+		 if (shortest == null || possible.compareTo(shortest) < 0) {
+			 shortest = possible;
+		 }
+	 }
+
+	 if (shortest == null)
+		 return;
+	 else 
+		 v = shortest.here();
+
+	 while (v != null) {
+		 if (!g.isVisted(v)) {
+			 if (e != null)
+				 g.visitEdge(g.getEdge(e.here(), e.there()));
+			 g.visit(v);
+
+			 Iterator ai = g.neighbors(v);
+			 while (ai.hasNext()) {
+				 e = g.getEdge(v, ai.next());
+				 q.add(new ComparableEdge(e)); // 添加到优先级队列上
+			 }
+		 }
+	 }
+
+	 if (!q.isEmpty()) {
+		 e = (Edge)q.remove();
+		 v = e.there();
+		 if (g.isVisited(v))
+			 v= e.here();
+	 } else {
+		 v = null;
+	 }
+}

@@ -1,0 +1,35 @@
+// 单源点 的 最短路径
+// Dijkstra 算法
+
+public static Map dijkstra(Graph g, Object start) {
+	PriorityQueue q = new SkewHeap();// 优先级队列
+	Map result = new Table();
+	Object v = start;
+	ComparableAssociation possible = new CompaarableAssociation(new Integer(0), null);
+	while (v != null) {
+		if (result.containsKey(v)) {
+			result.put(v, possible);
+			int vDist = ((Integer)possible.getKey()).intValue();
+
+			Iterator ai = g.neighbors(v);
+
+			while (ai.hasNext()) {
+				Edge e = g.getEdge(v, ai.next());
+				possible = new ComparableAssociation(new Integer(vDist + ((Integer)e.label()).intValue()), e);
+				q.add(possible);
+			}
+		}
+
+		if (!q.isEmpty()) {
+			possible = (ComparableAssociation)q.remove();
+			v = ((Edge)possible.getValue()).there();
+			if (result.containsKey(v)) {
+				v = ((Edge)possible.getValue()).here();
+			} else {
+				// no new vertex
+				v = null;
+			}
+		}
+	}
+	return result;
+}

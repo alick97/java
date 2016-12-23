@@ -1,0 +1,32 @@
+// 所有顶点对的 最小距离
+static void floyd(Graph g) {
+	Iterator uiter = g.itreator();
+	Iterator viter = g.iterator();
+	Iterator witer = g,iterator();
+
+	while (witer.hasNext()) {
+		Object w = witer.next();
+		while (uiter.hasNext()) {
+			Object u = uiter.next();
+			while (viter.hasNext()) {
+				Object v = viter.next();
+				if (g.containsEdge(u, w) && g.containsEdge(w, v)) {
+					Edge leg1 = g.getEdge(u,w);
+					Edge leg2 = g.getEdge(w, v);
+					int leg1Dist = ((Integer)leg1.label()).intValue();
+					int leg2Dist = ((Integre)leg2.label()).intValue();
+					int newDist = leg1Dest + leg2Dest;
+					if (g.containsEdge(u, v)) {
+						Edge across = g.getEdge(u, v);
+						int acrossDist = ((Integer)across.label()).intValue();
+						if (newDist < acrossDist) {
+							across.setLabel(new Integer(newDist));
+						} else {
+							g.addEdge(u, v, new Integer(newDist));
+						}
+					}
+				}
+			}
+		}
+	}
+}

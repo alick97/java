@@ -1,0 +1,22 @@
+// 计算 任意连个节点之间 的 可以到达性
+// 传递闭包
+
+static void warshall(Graph g) {
+	Iterator uiter = g.iterator();
+	Iterator viter = g.iterator();
+	Iterator witer = g.iterator();
+
+	while (witer.hasNext()) {
+		Object w = witer.next();
+		while (uiter.hasNext()) {
+			Object u = uiter.next();
+			while (viter.hasNext()) {
+				Object v = viter.next();
+
+				if (g.containsEdge(u, w) && g.containsEdge(w, v)) {
+					g.addEdge(u, v, null);
+				}
+			}
+		}
+	}
+}
